@@ -1,14 +1,17 @@
-import requests
-import re
-import functions
+import funcs
 
+GOOGLE_URL = "https://www.google.com"
 
-google_url = 'https://www.google.com'
-website = requests.get(google_url)
-urls = functions.readFile('sites_to_scrape.txt')
-for url in urls:
-    results_from_search = requests.get('https://www.google.com/search', params={'q': url.rstrip().replace(' ', '+')})
-    url_json = results_from_search.json()
-    repository = url_json['items'][0]
-    print(f'Repository name: {repository["name"]}')
-    print(f'Repository description: {repository["description"]}')
+for line in funcs.readTextFile('companies.txt'):
+    website_status = funcs.getWebsiteStatus(GOOGLE_URL, line)
+    links = funcs.linksOnWebsite(website_status)
+    all_urls = funcs.getUrlWithRegex(links)
+    facebook_urls = funcs.getFacebookUrlInList(all_urls)
+
+    facebook_status = funcs.getWebsiteStatus(facebook_urls[0])
+    facebook_links = funcs.facebookAboutPageUrl(facebook_status)
+    about_page_url = funcs.addFacebookUrlToUrl(facebook_links)
+
+    about_page_status = funcs.getWebsiteStatus(about_page_url)
+    email = funcs.getEmailFromFacebookAboutPage(about_page_status)
+    funcs.appendFile("companies_with_emails.txt", line, email)
