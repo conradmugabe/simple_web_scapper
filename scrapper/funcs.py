@@ -18,28 +18,54 @@ def readTextFile(file_path):
                 file_contents.append(content.strip())
 
         return file_contents
-    except FileNotFoundError as err:
-        return err
+    except FileNotFoundError:
+        return None
 
 
 def writeTextFile(file_path, content):
+    """
+    takes a file path and content to be put in the file
+
+    :param1 -> string: file path
+    :param2: content to be written in file
+
+    :return: True or raises a FileNotFoundError
+    """
     try:
         with open(file_path, "w") as file:
             file.write(content)
         return True
-    except FileNotFoundError as err:
-        return err
+    except FileNotFoundError:
+        return None
 
 
 def appendFile(file_name, content, more_content):
+    """
+    writes content to file
+
+    :param1 -> string: file path
+    :param2 -> string: content
+    :param3 -> string: content
+
+    return: True if file is appended or raises a FileNotFoundError
+    """
     try:
         with open(file_name, "a") as file:
             file.write(content + " : " + more_content + "\n")
-    except FileNotFoundError as err:
-        return err
+        return True
+    except FileNotFoundError:
+        return None
 
 
 def mapTwoListsToDic(list_one, list_two):
+    """
+    makes two lists of similar length into a dictionary
+
+    :param1 -> list:
+    :param2 -> list:
+
+    return: dict or False
+    """
     if len(list_one) != len(list_two):
         return False
     else:
@@ -89,6 +115,11 @@ def linksOnWebsite(webiste_status_dic):
 
 
 def getUrlWithRegex(url_list):
+    """
+    param -> list: lis of urls
+
+    return -> list:
+    """
     all_urls = []
     for url in url_list:
         if "q=http" in url:
@@ -99,6 +130,9 @@ def getUrlWithRegex(url_list):
 
 def getFacebookUrlInList(url_list):
     """
+    param -> list: list of urls
+
+    return -> list:
     """
     facebook_urls = []
     for url in url_list:

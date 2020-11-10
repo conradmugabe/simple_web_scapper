@@ -10,37 +10,92 @@ def test_readTextFile():
     prepare = ["new vision", "daily monitor", "cafe javas"]
 
     assert test == prepare
-    print("Ended readTextFile")
+    print("Finished testing readTextFile")
 
 
-def test_readTextFileException():
-    print("Started readTextFileException")
+def test_readtextException():
+    print("Started readTextFile")
+    path = "./test_data/something.txt"
 
-    with pytest.raises(FileNotFoundError):
-        funcs.readTextFile("./some_test_data/companies.txt")
+    test = funcs.readTextFile(path)
 
-    print("Ended readTextFileException")
-
-
-# def test_getWebsite():
-#     pass
+    assert test is None
+    print("Finished testing readTextFile")
 
 
-# def test_getWebsite_withSearch():
-#     pass
+def test_writeTextFile():
+    print("Started writeTextFile")
+    content = "hello world how are you?"
+    path = "./scrapper/tests/test_data/test_writetextfile.txt"
+    test = funcs.writeTextFile(path, content)
+
+    assert test is True
+    print("Finished testing writeTextFile")
+
+
+def test_writeTextFileException():
+    print("started writeTextFile")
+    content = "hello world how are you?"
+    path = "./scrapper/test_test_data/test_writetextfile.txt"
+
+    test = funcs.writeTextFile(path, content)
+
+    assert test is None
+    print("finished tetsing writeTextFile")
+
+
+def test_appendFile():
+    print("started appendFile")
+    path = "./scrapper/tests/test_data/test_appendtextfile"
+    company_name = "company name"
+    email = "company email"
+
+    test = funcs.appendFile(path, company_name, email)
+
+    assert test is True
+    print("Finished testing appendFile")
+
+
+def test_appendFileException():
+    print("Started appendFile")
+    path = "./scrapper/tests_test_data/test_appendtextfile"
+    company_name = "company name"
+    email = "company email"
+
+    test = funcs.appendFile(path, company_name, email)
+
+    assert test is None
+    print("Finished testing appendFile")
 
 
 def test_mapTwoListsToDic():
     print("started mapTwoListsToDic")
     list_one = [1, 2, 3, 4]
     list_two = ["hey", "how", "them", "user"]
-    list_three = ["user", "other", "james"]
 
     answer_one = funcs.mapTwoListsToDic(list_one, list_two)
+
+    assert answer_one == {1: "hey", 2: "how", 3: "them", 4: "user"}
+    print("Finished testing mapTwoListsToDic")
+
+
+def test_mapTwoListsToDicFail():
+    print("started mapTwoListsToDic")
+    list_one = [1, 2, 3, 4]
+    list_three = ["user", "other", "james"]
+
     answer_two = funcs.mapTwoListsToDic(list_one, list_three)
 
     assert answer_two is False
-    assert answer_one == {1: "hey", 2: "how", 3: "them", 4: "user"}
+    print("Finished testing mapTwoListsToDic")
+
+
+def test_getWebsiteStatus():
+    pass
+
+
+def test_linksOnWebsite():
+    pass
 
 
 def test_getUrlWithRegex():
@@ -50,10 +105,10 @@ def test_getUrlWithRegex():
     answer = funcs.getUrlWithRegex(url_list)
 
     assert answer == ["httpjjknrkjz"]
-    print("started getUrlWithRegex")
+    print("started testing getUrlWithRegex")
 
 
-def test_getFacebookUrlInLists():
+def test_getFacebookUrlInList():
     print("started getFacebookUrlInLists")
     facebook_url = "https://www.facebook.com"
     twitter_url = "https://www.twitter.com"
@@ -71,7 +126,19 @@ def test_getFacebookUrlInLists():
 
     assert fb_url_list_two == list()
     assert fb_url_list_one == answer
-    print("finished getFacebookUrlInLists")
+    print("finished testing getFacebookUrlInLists")
+
+
+def test_facebookAboutPageUrl():
+    pass
+
+
+def test_getEmailFromFacebookAboutPage():
+    pass
+
+
+def test_getEmailFromFacebookAboutPageFail():
+    pass
 
 
 def test_addFacebookUrlToUrl():
@@ -92,4 +159,14 @@ def test_addFacebookUrlToUrl():
 
     assert test_one == answer_one
     assert test_two == answer_two
-    print("finised addFacebookUrlToUrl")
+    print("finised testing addFacebookUrlToUrl")
+
+
+def test_addFacebookUrlToUrlException():
+    print("started addFacebookUrlToUrl")
+    test = []
+    
+    test = funcs.addFacebookUrlToUrl(test)
+
+    assert test is None
+    print("finsihed testing addFacebookUrlToUrl")
