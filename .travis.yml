@@ -1,9 +1,9 @@
 language: python
-python:
+python:import lxml
   - "3.8"
 install:
   - pip install -r requirements.txt
 script: 
-  - python -m pytest  --cov-report term --cov scrapper
+  - python -m pytest --cov-report term-missing --cov=scrapper
 after_success:
   - codecov

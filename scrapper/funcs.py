@@ -106,8 +106,8 @@ def linksOnWebsite(webiste_status_dic):
 
     return: list of urls on the site
     """
+    soup = parseSiteConent(webiste_status_dic)
     urls = []
-    soup = BeautifulSoup(webiste_status_dic["content"], "lxml")
     for link in soup.find_all("a"):
         urls.append(link.get("href"))
 
@@ -144,8 +144,8 @@ def getFacebookUrlInList(url_list):
 
 
 def facebookAboutPageUrl(webiste_status_dic):
+    soup = parseSiteConent(webiste_status_dic)
     urls = []
-    soup = BeautifulSoup(webiste_status_dic["content"], "lxml")
     for link in soup.find_all("a"):
         if "About" in link.text:
             urls.append(link.get("href"))
@@ -154,7 +154,7 @@ def facebookAboutPageUrl(webiste_status_dic):
 
 
 def getEmailFromFacebookAboutPage(webiste_status_dic):
-    soup = BeautifulSoup(webiste_status_dic["content"], "lxml")
+    soup = parseSiteConent(webiste_status_dic)
     for link in soup.find_all("a"):
         if "@" in link.text:
             return link.text
@@ -173,3 +173,13 @@ def addFacebookUrlToUrl(urls):
         return "https://facebook.com/pg" + str(urls[0])
     except IndexError:
         return None
+
+
+def parseSiteConent(webiste_status_dict):
+    """
+    param -> dict:
+
+    return -> Beautifulsoup object:
+    """
+    soup = BeautifulSoup(webiste_status_dict["content"], "lxml")
+    return soup
