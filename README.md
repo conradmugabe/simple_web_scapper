@@ -1,8 +1,8 @@
 # Web Scapper
 
 This is a web scrapper to get email addresses of companies from their facebook page
-
-[![Coverage Status](https://coveralls.io/repos/github/conrad-evans/simple_web_scapper/badge.svg?branch=develop)](https://coveralls.io/github/conrad-evans/simple_web_scapper?branch=develop)
+[![Build Status](https://travis-ci.com/conrad-evans/simple_web_scrapper.svg?branch=master)](https://travis-ci.com/conrad-evans/simple_web_scrapper)
+[![codecov](https://codecov.io/gh/conrad-evans/simple_web_scapper/branch/master/graph/badge.svg)](https://codecov.io/gh/conrad-evans/simple_web_scapper)
 
 # How to use it
 
