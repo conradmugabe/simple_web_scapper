@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 import pytest
 
 from scrapper import funcs
@@ -94,8 +95,23 @@ def test_getWebsiteStatus():
     pass
 
 
-def test_linksOnWebsite():
-    pass
+def test_linksOnWebsite(mocker):
+    html_string = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>Page Title</title>
+        </head>
+        <body>
+        <h1>This is a Heading</h1>
+        <p>This is a paragraph.</p>
+        <a href="./login.html">log in</a>
+        <a href="./logout.html">log out</a>
+        </body>
+        </html>
+    """
+    mocker.patch('funcs.linksOnWebsite', return_value=Bea)
+    
 
 
 def test_getUrlWithRegex():
@@ -165,8 +181,33 @@ def test_addFacebookUrlToUrl():
 def test_addFacebookUrlToUrlException():
     print("started addFacebookUrlToUrl")
     test = []
-    
+
     test = funcs.addFacebookUrlToUrl(test)
 
     assert test is None
     print("finsihed testing addFacebookUrlToUrl")
+
+
+def test_parseSiteContent():
+    print("started testing parseSiteContent")
+    html_string = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>Page Title</title>
+        </head>
+        <body>
+        <h1>This is a Heading</h1>
+        <p>This is a paragraph.</p>
+
+        </body>
+        </html>
+    """
+    test_dict = {"content": html_string}
+    soup_result = funcs.parseSiteConent(test_dict)
+    expected_result = "<h1>This is a Heading</h1>"
+    soup_result = list(soup_result.find_all("h1"))
+    soup_result = str(soup_result[0])
+
+    assert soup_result == expected_result
+    print("finished tesing parseSiteContent")
