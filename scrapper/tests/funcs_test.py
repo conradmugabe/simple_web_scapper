@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup
 import pytest
 
 from scrapper import funcs
@@ -92,10 +91,13 @@ def test_mapTwoListsToDicFail():
 
 
 def test_getWebsiteStatus():
+    print("started testing getWebisteStatus")
+    print("finished testing getWebsiteStatus")
     pass
 
 
-def test_linksOnWebsite(mocker):
+def test_linksOnWebsite():
+    print("started testing linksOnWebsite")
     html_string = """
         <!DOCTYPE html>
         <html>
@@ -110,8 +112,11 @@ def test_linksOnWebsite(mocker):
         </body>
         </html>
     """
-    mocker.patch('funcs.linksOnWebsite', return_value=Bea)
-    
+    content_dict = {"content": html_string}
+    urls = funcs.linksOnWebsite(content_dict)
+    expected_result = ["./login.html", "./logout.html"]
+    assert urls == expected_result
+    print("finished testing linksOnWebiste")
 
 
 def test_getUrlWithRegex():
@@ -146,15 +151,73 @@ def test_getFacebookUrlInList():
 
 
 def test_facebookAboutPageUrl():
-    pass
+    print("started testing facebookAboutPageUrl")
+    html_string = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>Page Title</title>
+        </head>
+        <body>
+        <h1>This is a Heading</h1>
+        <p>This is a paragraph.</p>
+        <a href="./login.html">log in</a>
+        <a href="./logout.html">log out</a>
+        <a href="./about.html">About</a>
+        </body>
+        </html>
+    """
+    content_dict = {"content": html_string}
+    urls = funcs.facebookAboutPageUrl(content_dict)
+    assert urls == ["./about.html"]
+    print("finished testing facebookAboutPageUrl")
 
 
 def test_getEmailFromFacebookAboutPage():
-    pass
+    print("started finishing getEmailFromFacebookAboutPage")
+    html_string = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>Page Title</title>
+        </head>
+        <body>
+        <h1>This is a Heading</h1>
+        <p>This is a paragraph.</p>
+        <a href="./login.html">log in</a>
+        <a href="./logout.html">log out</a>
+        <a href="">someone@email.com</a>
+        </body>
+        </html>
+    """
+    content_dict = {"content": html_string}
+    expected_result_one = funcs.getEmailFromFacebookAboutPage(content_dict)
+
+    assert expected_result_one == "someone@email.com"
+    print("finished testing getEmailFromFacebookAboutPage")
 
 
 def test_getEmailFromFacebookAboutPageFail():
-    pass
+    print("started testing getEmailFromFacebookAboutPageFail")
+    html_string = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>Page Title</title>
+        </head>
+        <body>
+        <h1>This is a Heading</h1>
+        <p>This is a paragraph.</p>
+        <a href="./login.html">log in</a>
+        <a href="./logout.html">log out</a>
+        </body>
+        </html>
+    """
+    content_dict = {"content": html_string}
+    expected_result = funcs.getEmailFromFacebookAboutPage(content_dict)
+
+    assert expected_result is None
+    print("finished testing getEmailFromFacebookAboutPageFail")
 
 
 def test_addFacebookUrlToUrl():
