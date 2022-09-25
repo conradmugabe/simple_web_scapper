@@ -3,7 +3,7 @@
 This is a web scrapper to get email addresses of companies from their facebook page
 
 [![Build Status](https://travis-ci.com/conrad-evans/simple_web_scrapper.svg?branch=master)](https://travis-ci.com/conrad-evans/simple_web_scrapper)
-[![codecov](https://codecov.io/gh/conrad-evans/simple_web_scapper/branch/master/graph/badge.svg)](https://codecov.io/gh/conrad-evans/simple_web_scapper)
+[![codecov](https://codecov.io/gh/conradmugabe/simple_web_scapper/branch/master/graph/badge.svg)](https://codecov.io/gh/conradmugabe/simple_web_scapper)
 
 # How to use it
 
