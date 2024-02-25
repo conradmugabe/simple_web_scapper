@@ -1,7 +1,6 @@
 package companynames_test
 
 import (
-	"io/fs"
 	"reflect"
 	"testing"
 	"testing/fstest"
@@ -9,55 +8,60 @@ import (
 	companynames "github.com/conradmugabe/simple_web_scapper/src"
 )
 
-type StubFailingFs struct {
-}
-
-func (s StubFailingFs) Open(name string) (fs.File, error) {
-	return nil, fs.ErrNotExist
-}
-
-func TestCompanyNames(t *testing.T) {
+func TestReadTextFileErrorsWhenFileNotFound(t *testing.T) {
 	fs := fstest.MapFS{
-		"companies.txt":         {Data: []byte("new vision")},
-		"textile_companies.txt": {Data: []byte("new vision")},
+		"test.txt":  {Data: []byte("")},
+		"test2.txt": {Data: []byte("hello world 2")},
+		"test3.txt": {Data: []byte("hello world 3")},
 	}
+	fileName := "test4.txt"
+	_, err := companynames.CompanyNamesFromTextFile(fs, fileName)
 
-	names, err := companynames.NewCompanyFromFs(fs)
+	if err == nil {
+		t.Errorf("got %v, wanted error", err)
+	}
+}
+
+func TestReadTextFile(t *testing.T) {
+	fs := fstest.MapFS{
+		"test.txt":  {Data: []byte("")},
+		"test2.txt": {Data: []byte("hello world 2")},
+		"test3.txt": {Data: []byte("hello world 3")},
+	}
+	fileName := "test.txt"
+	companies, err := companynames.CompanyNamesFromTextFile(fs, fileName)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if len(names) != len(fs) {
-		t.Errorf("got %d names, wanted %d names", len(names), len(fs))
+	want := []companynames.Company{}
+	if len(companies) != len(want) {
+		t.Errorf("got %d, wanted %d", len(companies), len(want))
 	}
 }
 
-func TestFailingCompanyNames(t *testing.T) {
-	fs := StubFailingFs{}
-
-	_, err := companynames.NewCompanyFromFs(fs)
-	if err == nil {
-		t.Fatal("expected an error")
-	}
-}
-
-func TestNewCompanyNames(t *testing.T) {
+func TestReadTestFileContent(t *testing.T) {
 	fs := fstest.MapFS{
-		"companies.txt": {Data: []byte("new vision")},
+		"test.txt":  {Data: []byte("hello\nworld")},
+		"test2.txt": {Data: []byte("hello world 2")},
+		"test3.txt": {Data: []byte("hello world 3")},
 	}
-	companies, _ := companynames.NewCompanyFromFs(fs)
+	fileName := "test.txt"
+	companies, _ := companynames.CompanyNamesFromTextFile(fs, fileName)
 
-	got := companies[0]
-	want := companynames.Company{Name: "new vision"}
+	if len(companies) != 2 {
+		t.Errorf("got %v, wanted %v", len(companies), 2)
+	}
 
-	assertCompany(t, got, want)
+	assertPost(t, companies[0], companynames.Company{Name: "hello"})
+	assertPost(t, companies[1], companynames.Company{Name: "world"})
+
 }
 
-func assertCompany(t *testing.T, got companynames.Company, want companynames.Company) {
+func assertPost(t *testing.T, got companynames.Company, want companynames.Company) {
 	t.Helper()
 	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %+v, want %+v", got, want)
+		t.Errorf("got %+v, wanted %+v", got, want)
 	}
-
 }
